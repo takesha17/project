@@ -1,19 +1,16 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from .models import Post
+from .serializers import PostSerializer
 
-def hello(request):
-    return render(request, "blog/index.html")
 
-def posts(request):
-    post_list = Post.objects.all()
-    context = {
-        "Info":post_list
-    }
-    return render(request,'blog/posts.html',context=context)
+class PostAPIView(APIView):
 
-def post_detail(request,id):
-    post = Post.objects.get(id=id)
-    context = {
-        "post":post
-    }
-    return render(request,'blog/aaa.html',context=context)
+    def get(self, request):
+        posts = Post.objects.all()
+        aa = PostSerializer(posts,many=True).data
+        return Response(aa)
+
+        
+        
