@@ -1,8 +1,8 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,RetrieveAPIView
 from rest_framework.response import Response
 
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer,PostDetailSerializer
 
 
 # class PostAPIView(APIView):
@@ -21,5 +21,8 @@ class PostAPIView(ListAPIView):
     #     print(Post.comments_set.all())
     #     return super().get_queryset()
 
+class PostDetailAPIView(RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer
         
         

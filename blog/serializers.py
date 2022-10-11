@@ -1,3 +1,4 @@
+from pkgutil import read_code
 from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
 from .models import Post,Comment
@@ -17,7 +18,22 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(read_only=True, many=True)
+    comments_count = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'title',
+            'created_at',
+            'comments_count',
+            'img'
+        ]
+    def get_comments_count(self, obj):
+        return obj.comments.count()
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(read_only = True,many = True)
     comments_count = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
